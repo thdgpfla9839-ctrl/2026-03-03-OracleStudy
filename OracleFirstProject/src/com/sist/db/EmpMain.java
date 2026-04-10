@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class EmpMain {
 
 	public static void main(String[] args)throws Exception 
-	{
+	{ 
 		Scanner scan = new Scanner(System.in);
 		System.out.println("직위 입력: ");
 		String name = scan.next();
