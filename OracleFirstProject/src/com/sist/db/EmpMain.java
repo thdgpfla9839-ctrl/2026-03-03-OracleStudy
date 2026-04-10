@@ -3,8 +3,8 @@ import java.sql.*;
 import java.util.Scanner;
 // 키워드는 대문자, 그리고 대문자 앞에는 항상 공백을 준다
 // 오라클sql에서 정보 불러와서 필요한 값만 출력하는 예제
-public class EmpMain {
-
+public class EmpMain { 
+ 
 	public static void main(String[] args)throws Exception 
 	{ 
 		Scanner scan = new Scanner(System.in);
