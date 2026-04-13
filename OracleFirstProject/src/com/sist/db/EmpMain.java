@@ -18,7 +18,7 @@ public class EmpMain {
 		Connection conn = DriverManager.getConnection(url,"hr","happy");
 		// 커넥션이 소켓
 		
-		// 명령문 보내기
+		 // 명령문 보내기
 		String sql="SELECT empno,ename,job FROM emp WHERE job LIKE '%"+name+"%'"; // 프롬다음에 반드시 테이블명 적기
 		
 		PreparedStatement ps = conn.prepareStatement(sql);// 이 메소드 안에 OutputStream있다
