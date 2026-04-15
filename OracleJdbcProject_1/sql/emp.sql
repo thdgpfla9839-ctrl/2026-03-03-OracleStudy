@@ -1,0 +1,111 @@
+-- 1. emp 테이블 생성
+CREATE TABLE emp (
+    empno NUMBER PRIMARY KEY,        -- 사원 ID
+    ename VARCHAR(50) NOT NULL, -- 사원 이름
+    job VARCHAR(50) NOT NULL,-- 직급
+    hiredate DATE NOT NULL,       -- 입사일
+    sal NUMBER(10,2) NOT NULL,-- 급여
+    deptno NUMBER NOT NULL           -- 부서 ID
+);
+
+-- 2. 100명 사원 데이터 INSERT
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (1,'김민준','사원', TO_DATE('2020-01-01', 'YYYY-MM-DD'), 3000.00, 1);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (2,'이서윤','대리', TO_DATE('2020-02-01', 'YYYY-MM-DD'), 3100.00, 2);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (3,'박지후','과장', TO_DATE('2020-03-01', 'YYYY-MM-DD'), 3200.00, 3);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (4,'최예린','차장', TO_DATE('2020-04-01', 'YYYY-MM-DD'), 3300.00, 4);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (5,'정하윤','부장', TO_DATE('2020-05-01', 'YYYY-MM-DD'), 3400.00, 5);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (6,'조서준','사원', TO_DATE('2020-06-01', 'YYYY-MM-DD'), 3050.00, 1);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (7,'강시우','대리', TO_DATE('2020-07-01', 'YYYY-MM-DD'), 3150.00, 2);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (8,'윤지민','과장', TO_DATE('2020-08-01', 'YYYY-MM-DD'), 3250.00, 3);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (9,'임서연','차장', TO_DATE('2020-09-01', 'YYYY-MM-DD'), 3350.00, 4);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (10,'한도윤','부장', TO_DATE('2020-10-01', 'YYYY-MM-DD'), 3450.00, 5);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (11,'오예준','사원', TO_DATE('2020-11-01', 'YYYY-MM-DD'), 3100.00, 1);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (12,'서민재','대리', TO_DATE('2020-12-01', 'YYYY-MM-DD'), 3200.00, 2);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (13,'신지후','과장', TO_DATE('2021-01-01', 'YYYY-MM-DD'), 3300.00, 3);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (14,'권하린','차장', TO_DATE('2021-02-01', 'YYYY-MM-DD'), 3400.00, 4);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (15,'배도윤','부장', TO_DATE('2021-03-01', 'YYYY-MM-DD'), 3500.00, 5);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (16,'류서윤','사원', TO_DATE('2021-04-01', 'YYYY-MM-DD'), 3150.00, 1);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (17,'안민준','대리', TO_DATE('2021-05-01', 'YYYY-MM-DD'), 3250.00, 2);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (18,'문지후','과장', TO_DATE('2021-06-01', 'YYYY-MM-DD'), 3350.00, 3);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (19,'유예린','차장', TO_DATE('2021-07-01', 'YYYY-MM-DD'), 3450.00, 4);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (20,'신하윤','부장', TO_DATE('2021-08-01', 'YYYY-MM-DD'), 3550.00, 5);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (21,'황민재','사원', TO_DATE('2021-09-01', 'YYYY-MM-DD'), 3200.00, 1);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (22,'노서윤','대리', TO_DATE('2021-10-01', 'YYYY-MM-DD'), 3300.00, 2);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (23,'표지후','과장', TO_DATE('2021-11-01', 'YYYY-MM-DD'), 3400.00, 3);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (24,'차예린','차장', TO_DATE('2021-12-01', 'YYYY-MM-DD'), 3500.00, 4);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (25,'천하윤','부장', TO_DATE('2022-01-01', 'YYYY-MM-DD'), 3600.00, 5);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (26,'강민준','사원', TO_DATE('2022-02-01', 'YYYY-MM-DD'), 3250.00, 1);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (27,'백서윤','대리', TO_DATE('2022-03-01', 'YYYY-MM-DD'), 3350.00, 2);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (28,'양지후','과장', TO_DATE('2022-04-01', 'YYYY-MM-DD'), 3450.00, 3);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (29,'송예린','차장', TO_DATE('2022-05-01', 'YYYY-MM-DD'), 3550.00, 4);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (30,'권하윤','부장', TO_DATE('2022-06-01', 'YYYY-MM-DD'), 3650.00, 5);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (31,'임민재','사원', TO_DATE('2022-07-01', 'YYYY-MM-DD'), 3300.00, 1);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (32,'오서윤','대리', TO_DATE('2022-08-01', 'YYYY-MM-DD'), 3400.00, 2);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (33,'서지후','과장', TO_DATE('2022-09-01', 'YYYY-MM-DD'), 3500.00, 3);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (34,'조예린','차장', TO_DATE('2022-10-01', 'YYYY-MM-DD'), 3600.00, 4);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (35,'배하윤','부장', TO_DATE('2022-11-01', 'YYYY-MM-DD'), 3700.00, 5);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (36,'류민준','사원', TO_DATE('2022-12-01', 'YYYY-MM-DD'), 3350.00, 1);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (37,'안서윤','대리', TO_DATE('2023-01-01', 'YYYY-MM-DD'), 3450.00, 2);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (38,'문지후','과장', TO_DATE('2023-02-01', 'YYYY-MM-DD'), 3550.00, 3);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (39,'유예린','차장', TO_DATE('2023-03-01', 'YYYY-MM-DD'), 3650.00, 4);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (40,'신하윤','부장', TO_DATE('2023-04-01', 'YYYY-MM-DD'), 3750.00, 5);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (41,'황민재','사원', TO_DATE('2023-05-01', 'YYYY-MM-DD'), 3400.00, 1);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (42,'노서윤','대리', TO_DATE('2023-06-01', 'YYYY-MM-DD'), 3500.00, 2);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (43,'표지후','과장', TO_DATE('2023-07-01', 'YYYY-MM-DD'), 3600.00, 3);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (44,'차예린','차장', TO_DATE('2023-08-01', 'YYYY-MM-DD'), 3700.00, 4);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (45,'천하윤','부장', TO_DATE('2023-09-01', 'YYYY-MM-DD'), 3800.00, 5);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (46,'강민준','사원', TO_DATE('2023-10-01', 'YYYY-MM-DD'), 3450.00, 1);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (47,'백서윤','대리', TO_DATE('2023-11-01', 'YYYY-MM-DD'), 3550.00, 2);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (48,'양지후','과장', TO_DATE('2023-12-01', 'YYYY-MM-DD'), 3650.00, 3);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (49,'송예린','차장', TO_DATE('2024-01-01', 'YYYY-MM-DD'), 3750.00, 4);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (50,'권하윤','부장', TO_DATE('2024-02-01', 'YYYY-MM-DD'), 3850.00, 5);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (51,'임민재','사원', TO_DATE('2024-03-01', 'YYYY-MM-DD'), 3500.00, 1);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (52,'오서윤','대리', TO_DATE('2024-04-01', 'YYYY-MM-DD'), 3600.00, 2);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (53,'서지후','과장', TO_DATE('2024-05-01', 'YYYY-MM-DD'), 3700.00, 3);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (54,'조예린','차장', TO_DATE('2024-06-01', 'YYYY-MM-DD'), 3800.00, 4);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (55,'배하윤','부장', TO_DATE('2024-07-01', 'YYYY-MM-DD'), 3900.00, 5);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (56,'류민준','사원', TO_DATE('2024-08-01', 'YYYY-MM-DD'), 3550.00, 1);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (57,'안서윤','대리', TO_DATE('2024-09-01', 'YYYY-MM-DD'), 3650.00, 2);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (58,'문지후','과장', TO_DATE('2024-10-01', 'YYYY-MM-DD'), 3750.00, 3);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (59,'유예린','차장', TO_DATE('2024-11-01', 'YYYY-MM-DD'), 3850.00, 4);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (60,'신하윤','부장', TO_DATE('2024-12-01', 'YYYY-MM-DD'), 3950.00, 5);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (61,'황민재','사원', TO_DATE('2025-01-01', 'YYYY-MM-DD'), 3600.00, 1);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (62,'노서윤','대리', TO_DATE('2025-02-01', 'YYYY-MM-DD'), 3700.00, 2);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (63,'표지후','과장', TO_DATE('2025-03-01', 'YYYY-MM-DD'), 3800.00, 3);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (64,'차예린','차장', TO_DATE('2025-04-01', 'YYYY-MM-DD'), 3900.00, 4);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (65,'천하윤','부장', TO_DATE('2025-05-01', 'YYYY-MM-DD'), 4000.00, 5);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (66,'강민준','사원', TO_DATE('2025-06-01', 'YYYY-MM-DD'), 3650.00, 1);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (67,'백서윤','대리', TO_DATE('2025-07-01', 'YYYY-MM-DD'), 3750.00, 2);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (68,'양지후','과장', TO_DATE('2025-08-01', 'YYYY-MM-DD'), 3850.00, 3);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (69,'송예린','차장', TO_DATE('2025-09-01', 'YYYY-MM-DD'), 3950.00, 4);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (70,'권하윤','부장', TO_DATE('2025-10-01', 'YYYY-MM-DD'), 4050.00, 5);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (71,'임민재','사원', TO_DATE('2025-11-01', 'YYYY-MM-DD'), 3700.00, 1);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (72,'오서윤','대리', TO_DATE('2025-12-01', 'YYYY-MM-DD'), 3800.00, 2);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (73,'서지후','과장', TO_DATE('2026-01-01', 'YYYY-MM-DD'), 3900.00, 3);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (74,'조예린','차장', TO_DATE('2026-02-01', 'YYYY-MM-DD'), 4000.00, 4);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (75,'배하윤','부장', TO_DATE('2026-03-01', 'YYYY-MM-DD'), 4100.00, 5);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (76,'류민준','사원', TO_DATE('2026-04-01', 'YYYY-MM-DD'), 3750.00, 1);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (77,'안서윤','대리', TO_DATE('2026-05-01', 'YYYY-MM-DD'), 3850.00, 2);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (78,'문지후','과장', TO_DATE('2026-06-01', 'YYYY-MM-DD'), 3950.00, 3);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (79,'유예린','차장', TO_DATE('2026-07-01', 'YYYY-MM-DD'), 4050.00, 4);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (80,'신하윤','부장', TO_DATE('2026-08-01', 'YYYY-MM-DD'), 4150.00, 5);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (81,'황민재','사원', TO_DATE('2026-09-01', 'YYYY-MM-DD'), 3800.00, 1);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (82,'노서윤','대리', TO_DATE('2026-10-01', 'YYYY-MM-DD'), 3900.00, 2);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (83,'표지후','과장', TO_DATE('2026-11-01', 'YYYY-MM-DD'), 4000.00, 3);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (84,'차예린','차장', TO_DATE('2026-12-01', 'YYYY-MM-DD'), 4100.00, 4);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (85,'천하윤','부장', TO_DATE('2027-01-01', 'YYYY-MM-DD'), 4200.00, 5);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (86,'강민준','사원', TO_DATE('2027-02-01', 'YYYY-MM-DD'), 3850.00, 1);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (87,'백서윤','대리', TO_DATE('2027-03-01', 'YYYY-MM-DD'), 3950.00, 2);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (88,'양지후','과장', TO_DATE('2027-04-01', 'YYYY-MM-DD'), 4050.00, 3);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (89,'송예린','차장', TO_DATE('2027-05-01', 'YYYY-MM-DD'), 4150.00, 4);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (90,'권하윤','부장', TO_DATE('2027-06-01', 'YYYY-MM-DD'), 4250.00, 5);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (91,'임민재','사원', TO_DATE('2027-07-01', 'YYYY-MM-DD'), 3900.00, 1);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (92,'오서윤','대리', TO_DATE('2027-08-01', 'YYYY-MM-DD'), 4000.00, 2);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (93,'서지후','과장', TO_DATE('2027-09-01', 'YYYY-MM-DD'), 4100.00, 3);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (94,'조예린','차장', TO_DATE('2027-10-01', 'YYYY-MM-DD'), 4200.00, 4);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (95,'배하윤','부장', TO_DATE('2027-11-01', 'YYYY-MM-DD'), 4300.00, 5);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (96,'류민준','사원', TO_DATE('2027-12-01', 'YYYY-MM-DD'), 3950.00, 1);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (97,'안서윤','대리', TO_DATE('2028-01-01', 'YYYY-MM-DD'), 4050.00, 2);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (98,'문지후','과장', TO_DATE('2028-02-01', 'YYYY-MM-DD'), 4150.00, 3);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (99,'유예린','차장', TO_DATE('2028-03-01', 'YYYY-MM-DD'), 4250.00, 4);
+INSERT INTO emp (empno, ename, job, hiredate, sal, deptno) VALUES (100,'신하윤','부장', TO_DATE('2028-04-01', 'YYYY-MM-DD'), 4350.00, 5);
