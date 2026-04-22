@@ -8,7 +8,7 @@ implements ActionListener
 {
 	MenuPenal mp=new MenuPenal();
 	ControllerPenal cp;
-    public UserMainForm()
+    public UserMainForm() 
     {
     	cp=new ControllerPenal(this);
     	setLayout(null);
