@@ -8,7 +8,7 @@ implements ActionListener
 {
 	MenuPenal mp=new MenuPenal();
 	ControllerPenal cp;
-    public UserMainForm() 
+    public UserMainForm()
     {
     	cp=new ControllerPenal(this);
     	setLayout(null);
@@ -37,6 +37,7 @@ implements ActionListener
 		if(e.getSource()==mp.b5) //사내게시판
 		{
 			cp.card.show(cp, "BLIST");
+			cp.bList.print();
 		}
 		else if(e.getSource()==mp.b1) //Home
 		{
