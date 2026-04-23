@@ -1,5 +1,6 @@
 package com.sist.client;
 import java.util.*;
+// 화면(클래스)관리하는 영역
 import java.awt.*;
 import javax.swing.*;
 public class ControllerPenal extends JPanel{
@@ -8,15 +9,15 @@ public class ControllerPenal extends JPanel{
 	BoardList bList;
 	BoardInsert bInsert;
 	BoardDetail bDetail;
+	BoardDelete bDelete;
 	HomePanel hp=new HomePanel();
     public ControllerPenal(UserMainForm mf)
     {
     	this.mf=mf;
     	bList=new BoardList(mf);
-    	this.bInsert = bInsert;
     	bInsert = new BoardInsert(mf);
-    	this.bDetail = bDetail;
     	bDetail = new BoardDetail(mf);
+    	bDelete = new BoardDelete(mf);
     	
     	setLayout(card);
     	//setBackground(Color.CYAN);
@@ -24,5 +25,6 @@ public class ControllerPenal extends JPanel{
     	add("BLIST",bList);
     	add("BINSERT",bInsert);
     	add("BDETAIL",bDetail);
+    	add("BdDelete",bDelete);
     }
 }
