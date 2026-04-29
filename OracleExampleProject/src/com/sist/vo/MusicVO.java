@@ -17,6 +17,6 @@ IDCREMENT    NUMBER(3)
  */
 @Data
 public class MusicVO {
-     private int no,con;
-     private String idcrement,title, singer, album, poster, state; 
+     private int no,con,idcrement;
+     private String title, singer, album, poster, state; 
 }
