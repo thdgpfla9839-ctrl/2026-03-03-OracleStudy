@@ -1,10 +1,9 @@
-# 2026-03-03-OracleStudy
 # 🗄️ Oracle 스터디 정리
 
 ## 📌 목차
 
 - [x] Chapter01~02 : 데이터베이스 개념, SQL 종류, 테이블/JOIN/PK
-- [ ] Chapter03 : 함수 (문자함수·숫자함수·날짜함수·변환함수·기타함수), GROUP BY·HAVING
+- [x] Chapter03 : 함수 (문자함수·숫자함수·날짜함수·변환함수·기타함수), GROUP BY·HAVING
 - [ ] Chapter04 : SUBQUERY
 - [ ] PL/SQL : FUNCTION · PROCEDURE · TRIGGER
 - [ ] JDBC 연동 프로젝트
@@ -125,5 +124,113 @@ CREATE TABLE dept (
     dname  VARCHAR2(30)
 );
 ```
+
+</details>
+
+<details>
+<summary><b>Chapter03. 함수 · 집계함수 · GROUP BY</b></summary>
+
+내장함수(라이브러리)는 크게 **단일행 함수**(row 단위로 계산)와 **집계함수**(컬럼 단위로 계산)로 나뉜다.
+
+### 1. 문자함수
+
+| 함수 | 기능 | 예시 |
+|---|---|---|
+| `UPPER()` | 대문자로 변환 | `SELECT UPPER(ENAME) FROM EMP;` |
+| `LOWER()` | 소문자로 변환 | `SELECT LOWER(EMAIL) FROM MEMBER;` |
+| `INITCAP()` | 첫 글자만 대문자로 변환 | `SELECT INITCAP(ENAME) FROM EMP;` |
+| `LENGTH()` | 문자열의 글자 수 | `SELECT LENGTH(NAME) FROM BOARD;` |
+| `SUBSTR()` | 문자 일부 추출 | `SUBSTR(PHONE,1,3)` |
+| `INSTR()` | 문자 위치 찾기(처음 나오는 위치 반환) | `SELECT INSTR('SCOTT','O') FROM EMP;` |
+| `REPLACE()` | 특정 문자를 다른 문자로 변경 | `SELECT REPLACE('010-1234-5678','-','') FROM DUAL;` |
+| `TRIM()` | 앞뒤 공백 또는 특정 문자 제거 | `SELECT TRIM('  SCOTT  ') FROM dual;` |
+
+**SUBSTR 상세**: `SUBSTR(컬럼명, 시작위치, 글자수)` — 몇 번째 글자부터 몇 글자를 자를지 지정.
+- 글자수를 생략하면 시작위치부터 끝까지 추출: `SUBSTR('SCOTT',3)` → 3번째 글자부터 끝까지
+- 시작위치에 음수를 주면 뒤에서부터 센다: `SUBSTR('SCOTT',-2)` → 뒤에서 2번째부터 끝까지
+
+**TRIM 상세**: `TRIM(문자열)`은 공백만 제거, `TRIM(제거할문자 FROM 문자열)`은 특정 문자를 제거.
+```sql
+SELECT TRIM('A' FROM 'AAHELLOAA') FROM dual;  -- HELLO
+```
+
+> 문자열은 오라클에서 항상 작은따옴표(`' '`)로 감싸서 작성한다.
+
+### 2. 숫자함수
+
+| 함수 | 기능 | 예시 |
+|---|---|---|
+| `ROUND(숫자, 자리수)` | 반올림 | `ROUND(123.456, 2)` → `123.46` |
+| `TRUNC(숫자, 자리수)` | 소수점 버림 | `TRUNC(123.456, 2)` → `123.45` |
+| `MOD(숫자1, 숫자2)` | 숫자1을 숫자2로 나눈 나머지 | `MOD(10, 3)` → `1` |
+
+### 3. 날짜함수
+
+| 함수 | 기능 | 예시 |
+|---|---|---|
+| `SYSDATE` | 현재 시스템 날짜·시간 반환 | `SELECT SYSDATE FROM dual;` |
+| `MONTHS_BETWEEN(날짜1, 날짜2)` | 두 날짜 사이의 개월 수(소수 포함 가능) | `MONTHS_BETWEEN(SYSDATE, hiredate)` |
+| `ADD_MONTHS(날짜, 개월수)` | 날짜에 개월 수를 더함(음수 가능 — 음수면 이전 달) | `ADD_MONTHS(SYSDATE, 3)` |
+| `NEXT_DAY(날짜, 요일)` | 기준 날짜 이후 가장 가까운 지정 요일 | `NEXT_DAY(SYSDATE,'MONDAY')` |
+
+### 4. 변환함수
+
+| 함수 | 기능 |
+|---|---|
+| `TO_CHAR` | 숫자·날짜를 문자열로 변환 (숫자 변환 시 `9,999,999` 형식 자주 사용) |
+| `TO_NUMBER` | 문자를 숫자로 변환 |
+| `TO_DATE` | 문자를 날짜로 변환 (생년월일, 예약날짜 등 문자열 입력을 DATE로 바꿀 때) |
+
+### 5. NULL 처리 함수
+
+| 함수 | 기능 | 예시 |
+|---|---|---|
+| `NVL(값, 대체값)` | 값이 NULL이면 대체값으로 출력 | `NVL(comm,0)` → comm이 NULL이면 0 |
+| `NVL2(값, NULL아닐때값, NULL일때값)` | NULL 여부에 따라 다른 값 출력 | `NVL2(comm,'있음','없음')` |
+| `COALESCE(값1, 값2, 값3...)` | NULL이 아닌 첫 번째 값 반환 | `COALESCE(phone, mobile, '없음')` |
+
+### 6. 조건함수 (오라클 전용)
+
+**CASE**: 조건을 다양하게(`<`, `>`, `BETWEEN ~ AND` 등) 사용할 수 있음
+
+```sql
+CASE
+    WHEN 조건 THEN 값
+    WHEN 조건 THEN 값
+    ELSE 값
+END AS 별칭
+```
+
+**DECODE vs CASE**
+
+| 구분 | DECODE | CASE |
+|---|---|---|
+| 조건 처리 | 단순 값 비교(`=`) | 모든 조건 연산(`<`,`>`,`BETWEEN` 등 복잡한 조건 가능) |
+| 가독성 | 낮음 | 높음 |
+
+### 7. 집계함수
+
+컬럼(column) 단위로 계산하는 함수. `GROUP BY`와 함께 자주 사용한다.
+
+| 함수 | 기능 | 예시 |
+|---|---|---|
+| `COUNT()` | 행의 개수 반환(NULL은 세지 않음) | `COUNT(*)` → 전체 행, `COUNT(comm)` → comm이 NULL 아닌 행 수 |
+| `SUM()` | 숫자 컬럼의 총합 | `SUM(sal)` |
+| `AVG()` | 숫자 컬럼의 평균 | `AVG(sal)` |
+| `MAX()` | 가장 큰 값 | `MAX(sal)` → 가장 높은 급여 |
+| `MIN()` | 가장 작은 값 | `MIN(sal)` → 가장 낮은 급여 |
+
+```sql
+SELECT COUNT(*) FROM emp;        -- emp 테이블 전체 행 개수
+SELECT COUNT(comm) FROM emp;     -- comm 값이 NULL이 아닌 행 개수
+SELECT SUM(sal) FROM emp;
+```
+
+### 8. GROUP BY / HAVING
+
+- **GROUP BY**: 같은 값을 가진 컬럼을 그룹화시켜서 따로 처리되게 만든다. 집계함수를 이용할 때 사용한다.
+- **HAVING**: 그룹화된 결과에 조건을 거는 절.
+
+**SQL 동작 순서**: `FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY`
 
 </details>
