@@ -4,7 +4,7 @@
 
 - [x] Chapter01~02 : 데이터베이스 개념, SQL 종류, 테이블/JOIN/PK
 - [x] Chapter03 : 함수 (문자함수·숫자함수·날짜함수·변환함수·기타함수), GROUP BY·HAVING
-- [ ] Chapter04 : SUBQUERY
+- [x] Chapter04 : SUBQUERY
 - [ ] PL/SQL : FUNCTION · PROCEDURE · TRIGGER
 - [ ] JDBC 연동 프로젝트
 
@@ -232,5 +232,148 @@ SELECT SUM(sal) FROM emp;
 - **HAVING**: 그룹화된 결과에 조건을 거는 절.
 
 **SQL 동작 순서**: `FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY`
+
+</details>
+
+<details>
+<summary><b>Chapter04. SUBQUERY(서브쿼리)</b></summary>
+
+### 1. 서브쿼리란
+
+SQL 문장 여러 개를 한 번에 처리하기 위해, 쿼리 안에 또 다른 쿼리(SELECT문)를 넣어서 결과를 통합하는 것.
+
+```sql
+-- 예제) 급여가 전체 평균보다 작은 사원의 정보를 출력
+
+-- 1) 평균부터 구하기
+SELECT avg(sal) FROM emp;   -- 결과: 2073
+
+-- 2) 그 값을 조건에 대입
+SELECT * FROM emp WHERE sal < 2073;
+
+-- 3) 두 단계를 서브쿼리로 한 번에 처리
+SELECT *
+FROM emp
+WHERE sal < (SELECT avg(sal) FROM emp);
+```
+
+> 실행 순서는 항상 **서브쿼리 실행 → 결과값 전송 → 메인쿼리 실행** 순이다. 괄호 안(서브쿼리)의 결과값은 1개일 수도, 여러 개일 수도 있다.
+
+**종류**
+
+| 구분 | 의미 |
+|---|---|
+| 단일행 서브쿼리 | 서브쿼리 결과가 1개인 경우 — 일반 비교연산자(`=`, `<`, `>`)로 처리 |
+| 다중행 서브쿼리 | 서브쿼리 결과가 여러 개인 경우 — `IN`, `ANY`, `ALL` 등으로 처리 |
+| 다중 컬럼 서브쿼리 | 비교할 컬럼이 여러 개인 경우 — `(col1, col2)` 형태 (실무에서는 잘 안 씀) |
+
+### 2. 단일행 서브쿼리
+
+```sql
+-- SCOTT가 근무하는 부서의 동료명단 출력하기
+SELECT *
+FROM emp
+WHERE deptno = (SELECT deptno
+                FROM emp
+                WHERE ename = 'SCOTT');
+
+-- 급여를 가장 많이 받는 사원과 같은 부서의 사원 목록 출력하기 (서브쿼리 중첩)
+SELECT *
+FROM emp
+WHERE deptno = (SELECT deptno
+                FROM emp
+                WHERE sal = (SELECT max(sal) FROM emp));
+```
+
+> 서브쿼리를 안 쓰면 "최고 급여 조회 → 그 사람 부서 조회 → 그 부서 사원 조회" 이렇게 SQL 문장을 3개나 따로 실행해야 하는데, 서브쿼리로 한 번에 처리할 수 있다.
+
+### 3. 다중행 서브쿼리
+
+서브쿼리 결과가 여러 개일 때 처리하는 방법 세 가지가 있다.
+
+| 방법 | 의미 |
+|---|---|
+| `IN` | 결과 전체를 대입해서 비교 (예: 10,20,30 → `in(10,20,30)`) |
+| `ANY` / `SOME` | 부등호 방향에 따라 최솟값 또는 최댓값 기준으로 비교 (둘은 동일하게 동작) |
+| `ALL` | 부등호 방향에 따라 최댓값 또는 최솟값 기준으로 비교 |
+
+```sql
+SELECT * FROM emp
+WHERE deptno IN (SELECT DISTINCT deptno FROM emp);
+
+SELECT * FROM emp
+WHERE deptno > ANY (SELECT DISTINCT deptno FROM emp);  -- 최솟값(10)보다 큰 것
+
+SELECT * FROM emp
+WHERE deptno < ALL (SELECT DISTINCT deptno FROM emp);  -- 최솟값(10)보다 작은 것
+```
+
+> `ANY`/`ALL`은 부등호 방향에 따라 헷갈리기 쉬워서, 가독성을 위해 실무에서는 `MAX()`/`MIN()`을 직접 써서 처리하는 걸 더 선호한다.
+
+```sql
+-- ANY/ALL 대신 MAX/MIN으로 명확하게
+SELECT * FROM emp WHERE deptno < (SELECT MAX(deptno) FROM emp);
+SELECT * FROM emp WHERE deptno > (SELECT MIN(deptno) FROM emp);
+```
+
+**활용 예시**
+
+```sql
+-- 도서를 구매한 적 있는 고객의 이름 출력 (다중행 서브쿼리)
+SELECT name
+FROM customer
+WHERE custid IN (SELECT DISTINCT custid FROM orders);
+
+-- 대한미디어에서 출판한 도서를 구매한 고객의 이름 출력 (서브쿼리 다중 중첩)
+SELECT name
+FROM customer
+WHERE custid = (SELECT custid
+                FROM orders
+                WHERE bookid IN (SELECT bookid
+                                 FROM book
+                                 WHERE publisher = '대한미디어'));
+```
+
+> 서브쿼리는 테이블이 달라도 사용할 수 있다 — 꼭 같은 테이블끼리만 서브쿼리를 쓸 수 있는 게 아니다.
+
+### 4. ROWNUM / EXISTS
+
+```sql
+-- ROWNUM으로 상위 N개만 출력 (급여가 가장 많은 5명)
+SELECT empno, ename, job, hiredate, sal, rownum
+FROM (SELECT * FROM emp ORDER BY sal DESC)
+WHERE rownum <= 5;
+```
+
+**EXISTS**: row가 존재하는지 여부만 확인(true/false). 값 자체를 가져오는 게 아니라 존재 확인만 하기 때문에 속도가 빠르다.
+
+```sql
+-- 부하직원이 있는 사원 출력
+SELECT ename
+FROM emp e                          -- 서브쿼리 속 emp와 구분하기 위해 별칭 사용
+WHERE EXISTS (SELECT 1
+              FROM emp
+              WHERE mgr = e.empno);
+
+-- 도서를 구매한 적 있는 고객 (IN 대신 EXISTS로 처리)
+SELECT name, address
+FROM customer cs
+WHERE EXISTS (SELECT *
+              FROM orders os
+              WHERE cs.custid = os.custid);
+```
+
+### 5. 서브쿼리 vs JOIN — 요약
+
+| 구분 | 의미 |
+|---|---|
+| JOIN | 테이블 + 테이블을 연결 → **컬럼을 확장**하는 것 |
+| 서브쿼리 | SQL + SQL을 하나로 통합 → **쿼리 안의 결과값을 가져와서** 사용하는 것 |
+
+**서브쿼리 종류 최종 정리**
+- 단일행 서브쿼리: 결과 1개, 비교연산자(`=`) 기준
+- 다중행 서브쿼리: 결과 여러 개, `IN`으로 집합 비교
+- 다중 컬럼 서브쿼리: `(col1, col2)` 복합조건 — 실무에서는 잘 사용하지 않음
+- `EXISTS`: 존재 여부만 체크 — 속도가 빠름
 
 </details>
