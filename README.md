@@ -6,7 +6,7 @@
 - [x] Chapter03 : 함수 (문자함수·숫자함수·날짜함수·변환함수·기타함수), GROUP BY·HAVING
 - [x] Chapter04 : SUBQUERY
 - [x] Chapter05 : DDL 상세 (테이블 생성규칙 · 데이터형 · 제약조건)
-- [ ] JDBC 연동 프로젝트
+- [x] JDBC 연동 프로젝트
 
 > 아래 각 항목을 클릭하면 상세 내용이 펼쳐집니다.
 
@@ -471,5 +471,147 @@ CREATE TABLE table_name (
 | 외래키(FK) | 다른 테이블과 연결할 때 사용, 반드시 그 테이블의 `PRIMARY KEY`와 연결되어야 함 |
 | `CHECK` | 지정된 값만 입력되도록 제한 (라디오버튼·콤보박스처럼 정해진 값만 받는 부서명, 근무지, 장르 등에 사용) |
 | `DEFAULT` | 제약조건은 아니지만, 값을 입력하지 않았을 때 자동으로 들어갈 기본값 지정 (예: `regdate DATE DEFAULT SYSDATE`, `hit NUMBER DEFAULT 0`) |
+
+</details>
+
+<details>
+<summary><b>JDBC 연동 프로젝트</b></summary>
+
+### 1. JDBC란
+
+자바 프로그램에서 오라클(데이터베이스)에 접속해서 SQL을 전송하고 결과를 받아오기 위한 연결 방식.
+
+```java
+private final String URL = "jdbc:oracle:thin:@localhost:1521:XE";
+// thin : 연결만 해주는 드라이버(무료)
+
+public FoodDAO() {
+    try {
+        Class.forName("oracle.jdbc.driver.OracleDriver");  // 드라이버 설정 - 최초 한 번만
+    } catch (Exception ex) {
+        ex.printStackTrace();
+    }
+}
+```
+
+**필요한 객체**
+
+| 객체 | 역할 |
+|---|---|
+| `Connection` | 오라클과의 연결 객체 |
+| `PreparedStatement` | SQL 문장을 오라클로 전송(송수신) |
+| `ResultSet` | `SELECT` 실행 결과(조회 데이터)를 받는 객체 |
+
+```java
+private Connection conn;
+private PreparedStatement ps;
+
+public void getConnection() {
+    try {
+        conn = DriverManager.getConnection(URL, "hr", "happy");
+    } catch (Exception ex) {}
+}
+
+public void disConnection() {
+    try {
+        if (ps != null) ps.close();
+        if (conn != null) conn.close();
+    } catch (Exception ex) {}
+}
+```
+
+> 한 사람(요청)당 1개의 Connection을 사용하고, 처리가 끝나면 반드시 `close()`로 닫아줘야 한다.
+
+### 2. VO (Value Object)
+
+테이블의 컬럼을 그대로 자바 변수로 옮겨 담는 클래스. 컬럼 하나 = 변수 하나로 매핑한다.
+
+```java
+// NO NAME TYPE PHONE ADDRESS SCORE PARKING POSTER TIME CONTENT THEME PRICE
+@Data                       // lombok - getter/setter 자동 생성
+public class FoodVO {
+    private int no;
+    private String name, type, phone, address, parking,
+            poster, time, content, theme, price;
+    private double score;
+}
+```
+
+### 3. DAO (Data Access Object)
+
+사용자의 요청을 받아서 실제로 오라클에 연결하고 SQL을 처리하는 클래스. 한 프로젝트에서 DAO 객체를 하나만 쓰도록 **싱글턴 패턴**으로 관리한다.
+
+```java
+private static FoodDAO dao;  // 싱글턴
+
+public static FoodDAO newInstance() {
+    if (dao == null)
+        dao = new FoodDAO();
+    return dao;
+}
+```
+
+**INSERT 처리**
+
+```java
+public void foodInsert(FoodVO vo) {
+    try {
+        getConnection();                         // 1. 연결
+        String sql = "INSERT INTO food VALUES(" +
+                     "?,?,?,?,?,?,?,?,?,?,?,?)";  // 2. SQL 문장(? = 자리표시자)
+        ps = conn.prepareStatement(sql);
+        ps.setInt(1, vo.getNo());                // 3. ?에 값 채우기
+        ps.setString(2, vo.getName());
+        ps.setString(3, vo.getType());
+        // ... 나머지 컬럼도 순서대로 set
+        ps.executeUpdate();                       // 4. 실행 (commit)
+    } catch (Exception ex) {
+        ex.printStackTrace();
+    } finally {
+        disConnection();                          // 5. 연결 닫기
+    }
+}
+```
+
+**SELECT 처리 (검색 결과를 리스트로 반환)**
+
+```java
+public List<FoodVO> foodFindData(String type) {
+    List<FoodVO> list = new ArrayList<FoodVO>();
+    try {
+        getConnection();
+        String sql = "SELECT no,name,type,address,phone " +
+                     "FROM food " +
+                     "WHERE type LIKE '%" + type + "%'" +
+                     "ORDER BY no ASC";
+        ps = conn.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();          // 실행 후 결과값을 받아옴
+        while (rs.next()) {
+            FoodVO vo = new FoodVO();
+            vo.setNo(rs.getInt(1));                // 컬럼 순서대로 값 추출
+            vo.setName(rs.getString(2));
+            vo.setType(rs.getString(3));
+            vo.setAddress(rs.getString(4));
+            vo.setPhone(rs.getString(5));
+            list.add(vo);                          // VO를 하나씩 리스트에 담음
+        }
+        rs.close();
+    } catch (Exception ex) {
+        ex.printStackTrace();
+    } finally {
+        disConnection();
+    }
+    return list;
+}
+```
+
+**흐름 정리**
+
+```plain text
+사용자 요청 → DAO(getConnection) → PreparedStatement로 SQL 전송
+   → INSERT/UPDATE/DELETE는 executeUpdate() / SELECT는 executeQuery()
+   → SELECT 결과는 ResultSet에 담겨 오고, rs.next()로 한 행씩 꺼내 VO에 담아 List로 반환
+   → 작업이 끝나면 disConnection()으로 자원 반납
+```
 
 </details>
